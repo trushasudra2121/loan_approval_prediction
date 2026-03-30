@@ -1,5 +1,9 @@
 import streamlit as st
-import requests
+import pickle
+import numpy as np
+
+# Load model
+model = pickle.load(open('loan_model.pkl', 'rb'))
 
 st.title("Loan Approval Predictor")
 
@@ -10,18 +14,18 @@ loan_term_months = st.slider("Loan Term (Months)", 60, 360, 180)
 num_dependents = st.slider("Number of Dependents", 0, 5, 1)
 
 if st.button("Predict Loan Approval"):
-    url = "https://loanapprovalprediction-hh2dofcwodobarxvsiq54y.streamlit.app/predict"   
-    data = {
-        "applicant_income": applicant_income,
-        "credit_score": credit_score,
-        "loan_amount": loan_amount,
-        "loan_term_months": loan_term_months,
-        "num_dependents": num_dependents
-    }
-    response = requests.post(url, json=data)
-    result = response.json()
     
-    if result['loan_approval_prediction'] == 1:
+    features = np.array([[
+        applicant_income,
+        credit_score,
+        loan_amount,
+        loan_term_months,
+        num_dependents
+    ]])
+    
+    prediction = model.predict(features)[0]
+    
+    if prediction == 1:
         st.success("Loan Approved ✅")
     else:
         st.error("Loan Not Approved ❌")
