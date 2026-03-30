@@ -10,7 +10,7 @@ loan_term_months = st.slider("Loan Term (Months)", 60, 360, 180)
 num_dependents = st.slider("Number of Dependents", 0, 5, 1)
 
 if st.button("Predict Loan Approval"):
-    url = "http://127.0.0.1:5000/predict"   
+    url = "https://loanapprovalprediction-hh2dofcwodobarxvsiq54y.streamlit.app/predict"   
     data = {
         "applicant_income": applicant_income,
         "credit_score": credit_score,
